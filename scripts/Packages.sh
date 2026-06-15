@@ -20,10 +20,28 @@ UPDATE_PACKAGE() {
 	fi
 }
 
+UPDATE_SSR_PLUS() {
+	local REPO_DIR="helloworld"
+	local PKG_NAME
+
+	rm -rf "$REPO_DIR"
+	git clone --depth=1 --single-branch --branch master "https://github.com/fw876/helloworld.git" "$REPO_DIR"
+
+	for PKG_NAME in luci-app-ssr-plus mihomo; do
+		[ -d "$REPO_DIR/$PKG_NAME" ] || continue
+		rm -rf "./$PKG_NAME"
+		find ../feeds/luci/ ../feeds/packages/ -maxdepth 4 -type d -name "$PKG_NAME" -prune -exec rm -rf {} +
+		cp -rf "$REPO_DIR/$PKG_NAME" ./
+	done
+
+	rm -rf "$REPO_DIR"
+}
+
 UPDATE_PACKAGE "argon" "jerrykuku/luci-theme-argon" "master"
 UPDATE_PACKAGE "argon-config" "jerrykuku/luci-app-argon-config" "master"
 UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
 UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
+UPDATE_SSR_PLUS
 # UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"

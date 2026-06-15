@@ -55,13 +55,22 @@ echo "CONFIG_PACKAGE_zoneinfo-asia=y" >> .config
 # =========================================================
 echo "📌 [5/12] 下载规则库..."
 
-mkdir -p files/usr/share/v2ray
+mkdir -p files/usr/share/v2ray files/usr/share/shadowsocksr files/etc/openclash files/etc/ssrplus/clash
 
 curl -L -o files/usr/share/v2ray/geosite.dat \
 https://fastly.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat
 
 curl -L -o files/usr/share/v2ray/geoip.dat \
 https://fastly.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat
+
+curl -L -o files/usr/share/shadowsocksr/Country.mmdb \
+https://fastly.jsdelivr.net/gh/alecthw/mmdb_china_ip_list@release/lite/Country.mmdb
+
+cp -f files/usr/share/v2ray/geosite.dat files/etc/openclash/GeoSite.dat
+cp -f files/usr/share/v2ray/geosite.dat files/etc/openclash/geosite.dat
+cp -f files/usr/share/v2ray/geoip.dat files/etc/openclash/geoip.dat
+cp -f files/usr/share/shadowsocksr/Country.mmdb files/etc/openclash/Country.mmdb
+cp -f files/usr/share/shadowsocksr/Country.mmdb files/etc/openclash/geoip.metadb
 
 
 mkdir -p files/etc/nikki/run
