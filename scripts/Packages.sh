@@ -27,7 +27,7 @@ UPDATE_SSR_PLUS() {
 	rm -rf "$REPO_DIR"
 	git clone --depth=1 --single-branch --branch master "https://github.com/fw876/helloworld.git" "$REPO_DIR"
 
-	for PKG_NAME in luci-app-ssr-plus mihomo; do
+	for PKG_NAME in luci-app-ssr-plus shadowsocksr-libev dns2socks-rust mihomo; do
 		[ -d "$REPO_DIR/$PKG_NAME" ] || continue
 		rm -rf "./$PKG_NAME"
 		find ../feeds/luci/ ../feeds/packages/ -maxdepth 4 -type d -name "$PKG_NAME" -prune -exec rm -rf {} +
