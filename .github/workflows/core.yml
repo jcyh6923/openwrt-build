@@ -29,6 +29,7 @@ env:
   REPO_BRANCH: ${{inputs.REPO_BRANCH}}
   FEEDS_CONF: ${{inputs.FEEDS_CONF}}
   CONFIG_FILE: ${{inputs.CONFIG_FILE}}
+  DEFAULT_LAN_IP: ${{ contains(inputs.TARGET, 'nowifi-ress01') && '192.168.2.1' || '192.168.1.1' }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -207,7 +208,7 @@ jobs:
           files: ${{ env.FIRMWARE }}/*
           body: |
             🌐 **【设备默认信息】**
-            后台地址：`192.168.1.1`
+            后台地址：`192.168.2.1`
             默认密码：无 (留空直接登录)
             默认 WIFI：`${{ env.REPO_SOURCE }}`  
             WIFI 密码：无
