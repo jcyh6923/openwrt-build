@@ -113,11 +113,23 @@ echo "✅ Dashboard 安装完成"
 # =========================================================
 echo "📌 [7/12] x86 网口绑定配置..."
 
-if [ -d "openwrt" ]; then
-    WRT_DIR="openwrt"
-else
-    WRT_DIR="."
-fi
+case "${TARGET:-} ${CONFIG_FILE:-}" in
+    *nowifi-ress01*)
+        mkdir -p "${WRT_DIR}/files/etc/uci-defaults"
+
+        cat << "EOF" > "${WRT_DIR}/files/etc/uci-defaults/99-custom-lan-ip"
+#!/bin/sh
+uci -q set network.lan.ipaddr='192.168.2.1'
+uci -q set network.lan.netmask='255.255.255.0'
+uci commit network
+exit 0
+EOF
+
+        chmod +x "${WRT_DIR}/files/etc/uci-defaults/99-custom-lan-ip"
+
+        echo "nowifi-ress01 default LAN IP set to 192.168.2.1"
+        ;;
+esac
 
 if grep -q "CONFIG_TARGET_x86=y" ${WRT_DIR}/.config; then
     mkdir -p ${WRT_DIR}/files/etc/uci-defaults
