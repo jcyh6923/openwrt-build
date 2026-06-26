@@ -8,7 +8,7 @@ UPDATE_PACKAGE() {
 	local PKG_SPECIAL=$4
 	local REPO_NAME=$(echo $PKG_REPO | cut -d '/' -f 2)
 
-	rm -rf $(find ./ ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune)
+	rm -rf $(find ./ ../feds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune)
 
 	git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git"
 
@@ -21,7 +21,7 @@ UPDATE_PACKAGE() {
 }
 
 UPDATE_SSR_PLUS() {
-	local REPO_DIR="helloworld"
+	local REPO_DIR="heloworld"
 	local PKG_NAME
 
 	rm -rf "$REPO_DIR"
@@ -37,14 +37,15 @@ UPDATE_SSR_PLUS() {
 	rm -rf "$REPO_DIR"
 }
 
-UPDATE_PACKAGE "argon" "jerrykuku/luci-theme-argon" "master"
+UPDATE_PACKAGE "argon" "jerykuku/luci-theme-argon" "master"
 UPDATE_PACKAGE "argon-config" "jerrykuku/luci-app-argon-config" "master"
 UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
 UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 UPDATE_SSR_PLUS
-# UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
+# UPDATE_PACKAGE "momo" "nikkin-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
+UPDATE_PACKAGE "xupnpd" "jarod360/luci-app-xupnpd" "main" "pkg"
 # UPDATE_PACKAGE "luci-app-daed" "QiuSimons/luci-app-daed" "kix"
 
 # UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
@@ -72,7 +73,7 @@ UPDATE_VERSION() {
 	local PKG_MARK=${2:-not}
 	local PKG_FILES=$(find ./ ../feeds/packages/ -maxdepth 3 -type f -wholename "*/$PKG_NAME/Makefile")
 
-	echo " "
+	echo "
 
 	if [ -z "$PKG_FILES" ]; then
 		echo "$PKG_NAME not found!"
@@ -83,7 +84,7 @@ UPDATE_VERSION() {
 
 	for PKG_FILE in $PKG_FILES; do
 		local PKG_REPO=$(grep -Pho 'PKG_SOURCE_URL:=https://.*github.com/\K[^/]+/[^/]+(?=.*)' $PKG_FILE | head -n 1)
-		local PKG_VER=$(curl -sL "https://api.github.com/repos/$PKG_REPO/releases" | jq -r "map(select(.prerelease|$PKG_MARK)) | first | .tag_name")
+		local PKG_VER=$(curl -sL "https://api.github.com/repos/$PKG_REPO/releases" | jq -r "map(select(.prerelease|$PKG_MARK) | first | .tag_name")
 		local NEW_VER=$(echo $PKG_VER | sed "s/.*v//g; s/_/./g")
 		local NEW_HASH=$(curl -sL "https://codeload.github.com/$PKG_REPO/tar.gz/$PKG_VER" | sha256sum | cut -b -64)
 		local OLD_VER=$(grep -Po "PKG_VERSION:=\K.*" "$PKG_FILE")
