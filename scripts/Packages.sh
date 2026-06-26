@@ -45,7 +45,9 @@ UPDATE_SSR_PLUS
 # UPDATE_PACKAGE "momo" "nikkin-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
-UPDATE_PACKAGE "xupnpd" "jarod360/luci-app-xupnpd" "main" "pkg"
+rm -rf ./luci-app-xupnpd
+git clone --depth=1 --single-branch --branch main "https://github.com/jarod360/luci-app-xupnpd.git" luci-app-xupnpd
+rm -f ./luci-app-xupnpd/root/etc/init.d/xupnpd
 # UPDATE_PACKAGE "luci-app-daed" "QiuSimons/luci-app-daed" "kix"
 
 # UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
